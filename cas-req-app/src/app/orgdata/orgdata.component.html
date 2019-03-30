@@ -1,0 +1,91 @@
+    <div class="clr-row">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    Gather Data On a Cloud Automation Services Organization
+                </div>
+                <div class="card-block">
+                    <div class="card-text">
+                        This component will return data about a Cloud Automation Services Organization using a CSP API Key. Query
+                        will run through the Cloud Automation Services API and return below. Fields returned will be Cloud Accounts, 
+                        Cloud Zones, Projects, and Blueprints
+                        <br>
+                        <br>
+                        Enter API Key below to get started!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div>
+    <form #f="ngForm" class="clr-form clr-form-horizontal" (ngSubmit)="onSubmit(f.value)">
+      <div class="clr-form-control">
+        <label for="example" class="clr-control-label">CSP API Key</label>
+        <div class="clr-control-container">
+          <div class="clr-input-wrapper">
+            <input type="text" [(ngModel)]="apikey" name="apikey" id="apikey"
+              placeholder="Enter a CAS API Key" class="clr-text" required>
+            <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          </div>
+        </div>
+      </div>
+      <br>
+      <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Submit</button>
+      <br>
+    </form>
+  </div>
+  <div *ngIf="show">
+    <div class="progress loop"><progress></progress></div>
+  </div>
+  <div *ngIf="showres">
+      <div class="clr-row">
+        <div class="clr-col-lg-3 clr-col-12">
+              <div class="card">
+                  <div class="card-header">
+                      Cloud Accounts
+                  </div>
+                  <div class="card-block">
+                      <div class="card-title">
+                          {{orgstats?.cloudaccounts}}
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="clr-col-lg-3 clr-col-12">
+              <div class="card">
+                  <div class="card-header">
+                      Cloud Zones
+                  </div>
+                  <div class="card-block">
+                      <div class="card-title">
+                          {{orgstats?.cloudzones}}
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="clr-col-lg-3 clr-col-12">
+              <div class="card">
+                  <div class="card-header">
+                      Deployments
+                  </div>
+                  <div class="card-block">
+                      <div class="card-title">
+                          {{orgstats?.deployments}}
+                      </div>
+                  </div>
+              </div>
+            </div>
+            <div class="clr-col-lg-3 clr-col-12">
+              <div class="card">
+                  <div class="card-header">
+                      Blueprints
+                  </div>
+                  <div class="card-block">
+                      <div class="card-title">
+                          {{orgstats?.blueprints}}
+                      </div>
+                  </div>
+              </div>
+              </div>
+          </div>
+      </div>

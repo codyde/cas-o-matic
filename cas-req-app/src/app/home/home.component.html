@@ -1,0 +1,56 @@
+<div>
+  <div class="clr-row">
+      <div>
+          <div class="card">
+              <div class="card-header">
+                  Entitle a User to a Cloud Automation Services SPC Organization
+              </div>
+              <div class="card-block">
+                  <div class="card-text">
+                      Leverage this form to add a user manually to a Cloud Automation Services Self-Paced course organization. This will initiate an automated process 
+                      which leverages the Cloud Automation Services Python SDK to add a user, and Cloud Account data to an organization, as well as adding their 
+                      information to an AWS DynamoDB table for tracking purposes. 
+                      <br>
+                      <br>
+                      Enter the users email address below to get started!
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+<div>
+<div>
+  <form #f="ngForm" class="clr-form clr-form-horizontal" (ngSubmit)="onSubmit(f.value)">
+    <div class="clr-form-control">
+      <label for="example" class="clr-control-label">VMware Email Address</label>
+      <div class="clr-control-container">
+        <div class="clr-input-wrapper">
+          <input type="text" [(ngModel)]="account" name="account" id="account"
+            placeholder="Enter an Email Address to Entitle" class="clr-text" required>
+          <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+        </div>
+      </div>
+    </div>
+    <br>
+    <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Submit</button>
+    <br>
+  </form>
+</div>
+<div *ngIf="show">
+  <div class="progress loop"><progress></progress></div>
+</div>
+<div *ngIf="showres">
+<clr-datagrid >
+  <clr-dg-column>Username</clr-dg-column>
+  <clr-dg-column>Assigned SPC Org Name</clr-dg-column>
+  <clr-dg-column>API Key for SPC Org</clr-dg-column>
+
+  <clr-dg-row>
+      <clr-dg-cell>{{casdata?.account}}</clr-dg-cell>
+      <clr-dg-cell>{{casdata?.orgname}}</clr-dg-cell>
+      <clr-dg-cell>{{casdata?.apikey}}</clr-dg-cell>
+  </clr-dg-row>
+</clr-datagrid>
+</div>
+</div>
+</div>

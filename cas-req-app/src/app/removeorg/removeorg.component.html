@@ -1,0 +1,41 @@
+<div>
+    <div class="clr-row">
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    Remove an Entitlement to a Cloud Automation Services SPC Organization
+                </div>
+                <div class="card-block">
+                    <div class="card-text">
+                        Leverage this form to remove a user who was added to a Cloud Automation Services organization via the automated process. 
+                        This form will scan the database for the users name and remove them from an org they are assigned to. It will only remove
+                        one at a time. You will need to remove multiple times for multi-assigned orgs. 
+                        <br>
+                        <br>
+                        Enter the users email address below to get started!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  <div>
+  <div>
+    <form #f="ngForm" class="clr-form clr-form-horizontal" (ngSubmit)="onSubmit(f.value)">
+      <div class="clr-form-control">
+        <label for="example" class="clr-control-label">VMware Email Address</label>
+        <div class="clr-control-container">
+          <div class="clr-input-wrapper">
+            <input type="text" [(ngModel)]="account" name="account" id="account"
+              placeholder="Enter an Email Address to Remove" class="clr-text" required>
+            <clr-icon class="clr-validate-icon" shape="exclamation-circle"></clr-icon>
+          </div>
+        </div>
+      </div>
+      <br>
+      <button type="submit" [disabled]="!f.valid" class="btn btn-primary">Submit</button>
+      <br>
+    </form>
+  </div>
+  <div *ngIf="show">
+    <div class="progress loop"><progress></progress></div>
+  </div>

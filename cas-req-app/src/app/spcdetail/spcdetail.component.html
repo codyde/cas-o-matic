@@ -1,0 +1,21 @@
+<div *ngIf="show">
+    <div class="progress loop"><progress></progress></div>
+</div>
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'spcorg'">SPC Org</clr-dg-column>
+  <clr-dg-column [clrDgField]="'orgid'">Org ID</clr-dg-column>
+  <clr-dg-column [clrDgField]="'apikey'">API Key</clr-dg-column>
+  <clr-dg-column [clrDgField]="'inuse'">Usage Status</clr-dg-column>
+  <clr-dg-column [clrDgField]="'Username'">Assigned User</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let spc of data">
+    <clr-dg-action-overflow>
+      <button class="action-item" (click)="onDeletion(spc.Username)">Delete</button>
+    </clr-dg-action-overflow>
+    <clr-dg-cell>{{spc.spcorg}}</clr-dg-cell>
+    <clr-dg-cell>{{spc.orgid}}</clr-dg-cell>
+    <clr-dg-cell>{{spc.apikey}}</clr-dg-cell>
+    <clr-dg-cell>{{spc.inuse}}</clr-dg-cell>
+    <clr-dg-cell>{{spc.Username}}</clr-dg-cell>
+  </clr-dg-row>
+</clr-datagrid>
