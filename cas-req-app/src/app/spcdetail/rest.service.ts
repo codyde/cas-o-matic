@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-const endpoint = 'http://127.0.0.1/api/spcorgs'
-const deletion = 'http://127.0.0.1/api/deleteorg'
+const endpoint = 'http://'+window.location.host+'/api/spcorgs'
+const deletion = 'http://'+window.location.host+'/api/deleteorg'
 
 const httpOptions = {
   headers: new HttpHeaders({

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 
-const endpoint = 'http://127.0.0.1/api/orgstats'
+const endpoint = 'http://'+window.location.host+'/api/orgstats'
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type':  'application/json'
