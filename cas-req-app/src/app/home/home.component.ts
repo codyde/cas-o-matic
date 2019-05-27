@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { Casdata } from './casdata'
 import { RestService } from './rest.service'
+import { ToastrService } from 'ngx-toastr'
+
 
 export interface Token {
   account: string;
@@ -21,8 +23,11 @@ export class HomeComponent {
   public show:boolean = false;
   public showres:boolean = false;
 
-  constructor(private rs: RestService) { }
-
+  constructor(private rs: RestService, private toastr: ToastrService) { }
+  
+  gogo(casdata){
+    this.toastr.success('The account '+casdata.account+' has been added','',{positionClass: 'toast-bottom-center', enableHtml: true, progressBar: true});
+  }
   onSubmit(token: Token) {
     console.log(token);
     this.show = true;
@@ -32,6 +37,7 @@ export class HomeComponent {
       this.showres = true;
       console.log(this.casdata)
       console.log(data)
+      this.gogo(this.casdata)
     });
     this.formValues.resetForm();
   }

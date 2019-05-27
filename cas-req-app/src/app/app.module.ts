@@ -10,6 +10,7 @@ import { FormsModule } from "@angular/forms";
 import { SpcdetailComponent } from './spcdetail/spcdetail.component';
 import { RemoveorgComponent } from './removeorg/removeorg.component';
 import { OrgdataComponent } from './orgdata/orgdata.component';
+import { ToastrModule } from 'ngx-toastr'
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { OrgdataComponent } from './orgdata/orgdata.component';
   ],
   imports: [
     BrowserModule,
+    ToastrModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
     ClarityModule,
