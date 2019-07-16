@@ -2,12 +2,12 @@ from gevent import monkey
 monkey.patch_all()
 from app.imports import get_item, get_user_org, delete_item, create_item, invite_user
 from app.imports import setup_org, cleanuptoken, force_delete, getorginfo, getspcorgs, orgstats
-from app.imports import deletion_block, forceclean
-from app.caspyr import Project, Request, Deployment, Blueprint, Machine
-from app.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
-from app.caspyr import CloudZone, ImageMapping, FlavorMapping
-from app.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount
-from app.caspyr import Session, User, Region
+from app.imports import deletion_block, forceclean, create_project
+from app.caspyr.caspyr import Project, Request, Deployment, Blueprint, Machine
+from app.caspyr.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
+from app.caspyr.caspyr import CloudZone, ImageMapping, FlavorMapping
+from app.caspyr.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount
+from app.caspyr.caspyr import Session, User, Region
 from threading import Thread
 from flask_socketio import SocketIO, emit
 from flask_cors import CORS
@@ -190,6 +190,18 @@ def get_org_stats():
     _token = req['apikey']
     data = orgstats(_token)
     return jsonify(data)
+
+@app.route('/api/project', methods=["POST"])
+def create_proj():
+    req = request.get_json()
+    print(req)
+    _token = req['apikey']
+    r = create_project(_token)
+    proj = {}
+    proj['name'] = r.name
+    proj['id'] = r.id
+    return jsonify(proj)
+
 
 @app.route("/api/health", methods=["GET"])
 def get_health():

@@ -1,8 +1,8 @@
-from app.caspyr import Project, Request, Deployment, Blueprint, Machine
-from app.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
-from app.caspyr import CloudZone, ImageMapping, FlavorMapping
-from app.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount
-from app.caspyr import Session, User, Region
+from app.caspyr.caspyr import Project, Request, Deployment, Blueprint, Machine, Integration
+from app.caspyr.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
+from app.caspyr.caspyr import CloudZone, ImageMapping, FlavorMapping, Source, Action
+from app.caspyr.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount
+from app.caspyr.caspyr import Session, User, Region
 import time
 import os
 
@@ -41,6 +41,36 @@ def cancel_active_requests(session):
             Request.cancel(session, i['id'])
             time.sleep(10)
         return
+
+def source_cleanup(session):
+    for i in Source.list(session):
+        if i['type'] == 'com.github.saas':
+            Source.delete(session, i['id'])
+    return
+
+def action_cleanup(session):
+    while len(Action.list(session)) > 0:
+        for i in Action.list(session):
+            Action.delete(session, i['selfLink'])
+        return
+
+def delete_integrations_github(session):
+    for i in Integration.list(session):
+        if i['endpointType'] == 'com.github.saas':
+            Integration.delete(session, i['resourceLink'])
+    return
+
+def delete_integrations_myvmware(session):
+    for i in Integration.list(session):
+        if i['endpointType'] == 'my-vmware':
+            Integration.delete(session, i['resourceLink'])
+    return
+
+def delete_integrations_ansible(session):
+    for i in Integration.list(session):
+        if i['endpointType'] == 'ansible':
+            Integration.delete(session, i['resourceLink'])
+    return
 
 def delete_blueprints(session):
     while len(Blueprint.list(session)) > 0:
@@ -100,16 +130,39 @@ def delete_cloudaccounts(session):
     return
 
 def cleanup(session, org, username):
+    print("Removing User")
     remove_user(session, org, username)
+    print("Cancelling Active Requests")
     cancel_active_requests(session)
+    print("Deleting Active Deployments")
     delete_deployments(session)
+    print("Deleting Source Content")
+    source_cleanup(session)
+    print("Deleting Actions")
+    action_cleanup(session)
+    print("Deleting GitHub Integrations")
+    delete_integrations_github(session)
+    print("Deleting My VMware Integration")
+    delete_integrations_myvmware(session)
+    print("Deleting Ansible Integration")
+    delete_integrations_ansible(session)
+    print("Deleting Cloud Accounts")
+    delete_cloudaccounts(session)
+    print("Deleting Blueprints")
     delete_blueprints(session)
+    print("Deleting Image Mappings")
     delete_image_mappings(session)
+    print("Deleting Flavor Mappings")
     delete_flavor_mapping(session)
+    print("Deleting Network Profiles")
     delete_network_profile(session)
+    print("Deleting Storage Profile")
     delete_storage_profile(session)
+    print("Deleting Project")
     delete_project(session)
+    print("Deleting Cloud Zones")
     delete_cloudzones(session)
+    print("Deleting Cloud Accounts")
     delete_cloudaccounts(session)
     info = ""
     info +=(f'*Cleanup on test org completed.* \n')
@@ -164,11 +217,17 @@ def setup_org(session, data):
                                  application_key=data['azure_application_key']
                                  )
     CloudZone.create(session,
-                     name='AWS SPC',
+                     name='Azure SPC',
                      region_id=os.path.split(
                          i._links['regions']['hrefs'][0])[1],
                      tags=[{"key": "platform", "value": "azure"}]
                      )
+
+def create_project(apitoken):
+    s = Session.login(apitoken)
+    r = Project.create(s, name="SPC Project")
+    return r
+
 
 def get_user_org(table,username):
         response = table.scan()['Items']
@@ -225,6 +284,16 @@ def deletion_block(session):
     try:
         bps = len(Blueprint.list(session))
         delete_blueprints(session)
+        print("Deleting Source Content")
+        source_cleanup(session)
+        print("Deleting Actions")
+        action_cleanup(session)
+        print("Deleting GitHub Integrations")
+        delete_integrations_github(session)
+        print("Deleting My VMware Integration")
+        delete_integrations_myvmware(session)
+        print("Deleting Ansible Integration")
+        delete_integrations_ansible(session)
         print(f"{bps} Blueprints Deleted")
         delete_image_mappings(session)
         print("Image Mappings Deleted")

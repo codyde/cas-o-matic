@@ -22,12 +22,14 @@ export class HomeComponent {
 
   public show:boolean = false;
   public showres:boolean = false;
+  public showbutton:boolean = false;
 
   constructor(private rs: RestService, private toastr: ToastrService) { }
   
   gogo(casdata){
     this.toastr.success('The account '+casdata.account+' has been added','',{positionClass: 'toast-bottom-center', enableHtml: true, progressBar: true});
   }
+
   onSubmit(token: Token) {
     console.log(token);
     this.show = true;
@@ -38,8 +40,18 @@ export class HomeComponent {
       console.log(this.casdata)
       console.log(data)
       this.gogo(this.casdata)
+      this.showbutton = true;
     });
     this.formValues.resetForm();
+  }
+
+  buildProject() {
+    this.rs.createProject(this.casdata).subscribe((ret: any) => {
+      console.log(ret)
+      this.toastr.success('Default Project Created','',{positionClass: 'toast-bottom-center', enableHtml: true, progressBar: true});
+      this.showbutton = false;
+    }
+    )
   }
 
 }
