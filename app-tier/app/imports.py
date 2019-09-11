@@ -42,6 +42,11 @@ def cancel_active_requests(session):
             time.sleep(10)
         return
 
+def catalogsource_cleanup(session):
+    for i in CatalogSource.list(session):
+        CatalogSource.delete(session, i['id'])
+    return
+
 def source_cleanup(session):
     for i in Source.list(session):
         if i['type'] == 'com.github.saas':
@@ -138,6 +143,8 @@ def cleanup(session, org, username):
     delete_deployments(session)
     print("Deleting Source Content")
     source_cleanup(session)
+    print("Removing Broker Sources")
+    catalogsource_cleanup(session)
     print("Deleting Actions")
     action_cleanup(session)
     print("Deleting GitHub Integrations")
