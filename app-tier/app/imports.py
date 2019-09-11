@@ -1,7 +1,7 @@
 from app.caspyr.caspyr import Project, Request, Deployment, Blueprint, Machine, Integration
 from app.caspyr.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
 from app.caspyr.caspyr import CloudZone, ImageMapping, FlavorMapping, Source, Action
-from app.caspyr.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount
+from app.caspyr.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount, CatalogSource
 from app.caspyr.caspyr import Session, User, Region
 import time
 import os
