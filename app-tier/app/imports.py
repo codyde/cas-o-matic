@@ -1,4 +1,4 @@
-from app.caspyr.caspyr import Project, Request, Deployment, Blueprint, Machine, Integration
+from app.caspyr.caspyr import Project, Request, Deployment, Blueprint, Machine, Integration, Subscription
 from app.caspyr.caspyr import NetworkProfile, StorageProfileAWS, StorageProfileAzure, StorageProfile
 from app.caspyr.caspyr import CloudZone, ImageMapping, FlavorMapping, Source, Action
 from app.caspyr.caspyr import CloudAccountAws, CloudAccountAzure, CloudAccount, CatalogSource
@@ -51,6 +51,11 @@ def source_cleanup(session):
     for i in Source.list(session):
         if i['type'] == 'com.github.saas':
             Source.delete(session, i['id'])
+    return
+
+def sub_cleanup(session):
+    for i in Subscription.list(session):
+        Subscription.delete(i['id'])
     return
 
 def action_cleanup(session):
@@ -145,6 +150,8 @@ def cleanup(session, org, username):
     source_cleanup(session)
     print("Removing Broker Sources")
     catalogsource_cleanup(session)
+    print("Removing Subscriptions")
+    sub_cleanup(session)
     print("Deleting Actions")
     action_cleanup(session)
     print("Deleting GitHub Integrations")
