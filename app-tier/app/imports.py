@@ -300,6 +300,8 @@ def deletion_block(session):
         delete_blueprints(session)
         print("Deleting Source Content")
         source_cleanup(session)
+        print("Deleting Subscriptions")
+        sub_cleanup(session)
         print("Deleting Actions")
         action_cleanup(session)
         print("Deleting GitHub Integrations")
